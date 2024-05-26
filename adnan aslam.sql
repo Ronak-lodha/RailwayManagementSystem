@@ -1,76 +1,93 @@
-CREATE DATABASE StudentDatabaseManagement;
-
-
-USE StudentDatabaseManagement;
-
-
-CREATE TABLE Students (
-    StudentID INT PRIMARY KEY,
-    Name VARCHAR(100),
-    Email VARCHAR(100),
-    Phone VARCHAR(20),
-    Address VARCHAR(200)
+CREATE DATABASE RailwayManagementSystem;
+USE RailwayManagementSystem;
+-- Create Trains Table
+CREATE TABLE Trains (
+    TrainID INT PRIMARY KEY,
+    TrainName VARCHAR(100),
+    DepartureStation VARCHAR(100),
+    ArrivalStation VARCHAR(100),
+    DepartureTime TIME,
+    ArrivalTime TIME
 );
 
-CREATE TABLE Courses (
-    CourseID INT PRIMARY KEY,
-    CourseName VARCHAR(100),
-    Credits INT,
-    Description VARCHAR(200)
+-- Create Stations Table
+CREATE TABLE Stations (
+    StationID INT PRIMARY KEY,
+    StationName VARCHAR(100),
+    City VARCHAR(100)
 );
 
-CREATE TABLE Enrollments (
-    EnrollmentID INT PRIMARY KEY,
-    StudentID INT,
-    CourseID INT,
-    EnrollmentDate DATE,
-    FOREIGN KEY (StudentID) REFERENCES Students(StudentID),
-    FOREIGN KEY (CourseID) REFERENCES Courses(CourseID)
+-- Create Passengers Table
+CREATE TABLE Passengers (
+    PassengerID INT PRIMARY KEY,
+    PassengerName VARCHAR(100),
+    Age INT,
+    Gender VARCHAR(10)
 );
 
-CREATE TABLE Instructors (
-    InstructorID INT PRIMARY KEY,
-    Name VARCHAR(100),
-    Email VARCHAR(100),
-    Phone VARCHAR(20)
+-- Create Tickets Table
+CREATE TABLE Tickets (
+    TicketID INT PRIMARY KEY,
+    PassengerID INT,
+    TrainID INT,
+    DateOfBooking DATE,
+    Fare DECIMAL(10, 2),
+    SeatNumber INT,
+    FOREIGN KEY (PassengerID) REFERENCES Passengers(PassengerID),
+    FOREIGN KEY (TrainID) REFERENCES Trains(TrainID)
 );
 
-CREATE TABLE Departments (
-    DepartmentID INT PRIMARY KEY,
-    DepartmentName VARCHAR(100)
+-- Create Routes Table
+CREATE TABLE Routes (
+    RouteID INT PRIMARY KEY,
+    TrainID INT,
+    StationID INT,
+    Sequence INT,
+    FOREIGN KEY (TrainID) REFERENCES Trains(TrainID),
+    FOREIGN KEY (StationID) REFERENCES Stations(StationID)
 );
 
-CREATE TABLE Course_Departments (
-    CourseID INT,
-    DepartmentID INT,
-    FOREIGN KEY (CourseID) REFERENCES Courses(CourseID),
-    FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID)
+-- Create Employees Table
+CREATE TABLE Employees (
+    EmployeeID INT PRIMARY KEY,
+    EmployeeName VARCHAR(100),
+    Designation VARCHAR(100),
+    Salary DECIMAL(10, 2)
 );
 
-CREATE TABLE Grades (
-    GradeID INT PRIMARY KEY,
-    StudentID INT,
-    CourseID INT,
-    Grade DECIMAL(3,2),
-    FOREIGN KEY (StudentID) REFERENCES Students(StudentID),
-    FOREIGN KEY (CourseID) REFERENCES Courses(CourseID)
+-- Create Departures Table
+CREATE TABLE Departures (
+    DepartureID INT PRIMARY KEY,
+    TrainID INT,
+    DepartureDate DATE,
+    PlatformNumber INT,
+    FOREIGN KEY (TrainID) REFERENCES Trains(TrainID)
 );
 
-CREATE TABLE Course_Instructors (
-    CourseID INT,
-    InstructorID INT,
-    FOREIGN KEY (CourseID) REFERENCES Courses(CourseID),
-    FOREIGN KEY (InstructorID) REFERENCES Instructors(InstructorID)
+-- Create Arrivals Table
+CREATE TABLE Arrivals (
+    ArrivalID INT PRIMARY KEY,
+    TrainID INT,
+    ArrivalDate DATE,
+    PlatformNumber INT,
+    FOREIGN KEY (TrainID) REFERENCES Trains(TrainID)
 );
 
-CREATE TABLE Semesters (
-    SemesterID INT PRIMARY KEY,
-    SemesterName VARCHAR(50)
+-- Create CateringServices Table
+CREATE TABLE CateringServices (
+    ServiceID INT PRIMARY KEY,
+    TrainID INT,
+    ServiceName VARCHAR(100),
+    ServiceCharge DECIMAL(10, 2),
+    FOREIGN KEY (TrainID) REFERENCES Trains(TrainID)
 );
 
-CREATE TABLE Course_Semesters (
-    CourseID INT,
-    SemesterID INT,
-    FOREIGN KEY (CourseID) REFERENCES Courses(CourseID),
-    FOREIGN KEY (SemesterID) REFERENCES Semesters(SemesterID)
+-- Create Feedback Table
+CREATE TABLE Feedback (
+    FeedbackID INT PRIMARY KEY,
+    PassengerID INT,
+    TrainID INT,
+    FeedbackText TEXT,
+    FOREIGN KEY (PassengerID) REFERENCES Passengers(PassengerID),
+    FOREIGN KEY (TrainID) REFERENCES Trains(TrainID)
 );
